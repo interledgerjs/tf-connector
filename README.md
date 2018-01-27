@@ -109,7 +109,7 @@ PR to this repo.
   "AdministratorAccess". Set the user's name to "connector".
 
 - Once the user is created, save the Access Key and Secret Key. Create a file called
-  `~/terraform.sh`, and copy in the following:
+  `~/terraform.sh` and copy in the following:
 
 ```
 #!/bin/bash
