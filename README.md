@@ -8,10 +8,10 @@ This configuration process is a work in progress. This deploy process has not be
 
 ```
 key_name="myKeyName"
-key_path="/home/myUser/.ssh/myKeyFile.pub"
+public_key_path="/home/myUser/.ssh/myKeyFile.pub"
 ```
 
-- (Optional) Change the `aws_region` to your preferred AWS region in your 
+- (Optional) Change the `aws_region` to your preferred AWS region.
 - Set the instances of `<YOUR_HOST>` in `terraform/main.tf` to the actual domain name you want to run your connector on.
 - Set `<YOUR_RIPPLE_HOT_WALLET_SECRET>` in `salt/connector/files/launch.config.js` to your ripple hot wallet secret.
 - Set `<GENERATE_SECRET>` to a securely generated **RANDOM** secret key, of at least 16 bytes. It MUST be URL-safe. For instance, `require('crypto').randomBytes(16).toString('hex')`.
@@ -24,7 +24,7 @@ specified in `terraform/terraform.tfvars` is available from your environment via
 
 ```sh
 eval "$(ssh-agent -s)"
-ssh-add /home/myUser/.ssh/myKeyFile.pub
+ssh-add /home/myUser/.ssh/myKeyFile
 ```
 
 ## Deploy
