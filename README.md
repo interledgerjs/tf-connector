@@ -8,7 +8,7 @@ This configuration process is a work in progress. This deploy process has not be
 
 ```
 key_name="myKeyName"
-key_path="/home/myUser/.ssh/myKeyFile.pub"
+public_key_path="/home/myUser/.ssh/myKeyFile.pub"
 ```
 
 - (Optional) Change the `aws_region` to your preferred AWS region in your 
