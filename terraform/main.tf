@@ -102,6 +102,61 @@ resource "aws_key_pair" "auth" {
   public_key = "${file(var.public_key_path)}"
 }
 
+resource "aws_simpledb_domain" "connector" {
+  name = "connector"
+}
+
+resource "aws_iam_policy" "connector-policy" {
+  name = "connector-policy"
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": {
+    "Effect": "Allow",
+    "Action": [
+      "sdb:BatchDeleteAttributes",
+      "sdb:BatchPutAttributes",
+      "sdb:DeleteAttributes",
+      "sdb:DeleteDomain",
+      "sdb:DomainMetadata",
+      "sdb:GetAttributes",
+      "sdb:ListDomains",
+      "sdb:PutAttributes",
+      "sdb:Select"
+    ],
+    "Resource": "*"
+  }
+}
+EOF
+}
+
+resource "aws_iam_role" "connector-instance" {
+  name = "connector-instance"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": {
+    "Action": "sts:AssumeRole",
+    "Effect": "Allow",
+    "Principal": {
+      "Service": "ec2.amazonaws.com"
+    }
+  }
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "connector-policy-attachment" {
+  role = "${aws_iam_role.siren-instance.name}"
+  policy_arn = "${aws_iam_policy.connector-policy.arn}"
+}
+
+resource "aws_iam_instance_profile" "connector-instance-profile" {
+  name = "siren-instance-profile"
+  role = "${aws_iam_role.connector-instance.name}"
+}
+
 resource "aws_instance" "web" {
   # The connection block tells our provisioner how to
   # communicate with the resource (instance)
@@ -123,6 +178,9 @@ resource "aws_instance" "web" {
 
   # Our Security group to allow HTTP and SSH access
   vpc_security_group_ids = ["${aws_security_group.default.id}"]
+
+  # Give permission to use SimpleDB
+  iam_instance_profile = "${aws_iam_instance_profile.connector-instance-profile.name}"
 
   # We're going to launch into the same subnet as our ELB. In a production
   # environment it's more common to have a separate private subnet for
