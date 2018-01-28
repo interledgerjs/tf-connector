@@ -148,12 +148,12 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "connector-policy-attachment" {
-  role = "${aws_iam_role.siren-instance.name}"
+  role = "${aws_iam_role.connector-instance.name}"
   policy_arn = "${aws_iam_policy.connector-policy.arn}"
 }
 
 resource "aws_iam_instance_profile" "connector-instance-profile" {
-  name = "siren-instance-profile"
+  name = "connector-instance-profile"
   role = "${aws_iam_role.connector-instance.name}"
 }
 
