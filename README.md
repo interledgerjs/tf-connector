@@ -143,8 +143,8 @@ bash ~/terraform.sh apply
 
 ### Set up your domain
 
-- Your connector must be deployed already. Complete the deploy instructions
-  before continuing here.
+- Your connector must be deployed already. Complete the deploy instructions,
+  then continue here.
 
 - Go to your AWS management console and open the "Route 53" service.
 
@@ -215,12 +215,15 @@ With
 ```
 
 - Now the `server` you can give your peer is
-  `btp+ws://:GENERATE_A_SECURE_RANDOM_SECRET@example.com` (With `example.com`
+  `btp+ws://:GENERATE_A_SECURE_RANDOM_SECRET@btp.example.com` (With `example.com`
   as your domain, `GENERATE_A_SECURE_RANDOM_SECRET` as your generated secret, and
   `8080` as your instance port (the load balancer will expose 80)). (Change to
   `wss` if you already completed [Upgrading to SSL](#upgrading-to-ssl))
 
-- [Redeploy](#redeploy) your connector.
+- Make sure you [Set up your domain](#set-up-your-domain) once your connector
+  is deployed, if it is not deployed already.
+
+- [Redeploy](#redeploy) your connector if it is already deployed.
 
 ### Adding another peer
 
