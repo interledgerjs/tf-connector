@@ -215,21 +215,99 @@ With
 ```
 
 - Now the `server` you can give your peer is
-  `btp+ws://:GENERATE_A_SECURE_RANDOM_SECRET@example.com:8080` (With
-  `example.com` as your domain, `GENERATE_A_SECURE_RANDOM_SECRET` as your
-  generated secret, and `8080` as your port).
+  `btp+ws://:GENERATE_A_SECURE_RANDOM_SECRET@example.com` (With `example.com`
+  as your domain, `GENERATE_A_SECURE_RANDOM_SECRET` as your generated secret, and
+  `8080` as your instance port (the load balancer will expose 80)). (Change to
+  `wss` if you already completed [Upgrading to SSL](#upgrading-to-ssl))
 
-- If you've already deployed, change directories into `./terraform` and run
-  `bash ~/terraform.sh apply` to apply these changes. You don't need to taint
-  anything; Terraform is smart enough to notice which blocks you've edited.
+- [Redeploy](#redeploy) your connector.
 
 ### Adding another peer
 
 - Open `./salt/connector/files/launch.config.js` in your editor of choice.
 
-- 
+- Add the following block, after the constants declared at the top of the file:
 
-### Upgrading to use SSL
+```
+const secondPeerPlugin = {
+  relation: 'peer',
+  plugin: 'ilp-plugin-xrp-paychan',
+  assetCode: 'XRP',
+  assetScale: 6,
+  balance: {
+    maximum: '10000',
+    settleThreshold: '-5000',
+    settleTo: '0'
+  },
+  options: {
+    server: 'SERVER_URI_GIVEN_TO_YOU_BY_YOUR_PEER',
+    rippledServer: 'wss://s1.ripple.com',
+    secret,
+    address,
+    peerAddress: 'RIPPLE_ADDRESS_OF_PEER'
+  }
+}
+```
+
+- Follow the instructions in [Tier 1 with XRP and
+  AWS](#tier-1-with-xrp-and-aws) to fill in the placeholder fields.  If you are
+  the websocket server in this relationship, you'll also have to follow [Acting
+  as a Server](#acting-as-a-server).
+
+- In the `CONNECTOR_ACCOUNTS` object, add another entry that says:
+
+```
+  secondPeer: secondPeerPlugin
+```
+
+- [Redeploy](#redeploy) your connector.
+
+### Upgrading to SSL
+
+- Go to your AWS management console. Select the "Certificate Manager" service.
+
+- Select "Request a Certificate," and request `*.example.com`, where `example.com`
+  is the domain you put in your `./terraform/terraform.tfvars`.
+
+- Follow the instructions that AWS provides. If you've configured your domain
+  via Route 53 (which Terraform should have done automatically), AWS will go
+  through the process automatically.
+
+- Open `./terraform/terraform.tfvars` in your editor of choice.
+
+- Add the following block at the top of the file (replacing `example.com` with
+  your domain):
+
+```
+data "aws_acm_certificate" "web-cert" {
+  domain   = "*.example.com"
+  statuses = ["ISSUED"]
+}
+```
+
+- In the `resource "aws_security_group" "elb"` block, add the following block:
+
+```
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+```
+
+- In the `resource "aws_elb" "web"` block, change `lb_port` to `443` wherever
+  it previously said `80`, in any `listener` block. Change `lb_protocol` to
+  `ssl` on all `listener` blocks. In every `listener` block, add the following
+  line at the end:
+
+```
+    ssl_certificate_id = "${data.aws_acm_certificate.web-cert.arn}"
+```
+
+- If you've already deployed, change directories into `./terraform` and run
+  `bash ~/terraform.sh apply` to apply these changes. You don't need to taint
+  anything; Terraform is smart enough to notice which blocks you've edited.
 
 ### Redeploy
 
