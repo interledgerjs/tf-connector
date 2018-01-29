@@ -14,7 +14,7 @@ resource "aws_internet_gateway" "default" {
 }
 
 # Grant the VPC internet access on its main route table
-resource "aws_route" "internet_access" {
+resource "aws_route" "inte/net_access" {
   route_table_id         = "${aws_vpc.default.main_route_table_id}"
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = "${aws_internet_gateway.default.id}"
@@ -30,7 +30,7 @@ resource "aws_subnet" "default" {
 # A security group for the ELB so it is accessible via the web
 resource "aws_security_group" "elb" {
   name        = "connector_elb"
-  description = "Used for btp.<YOUR_HOST> load-balancer"
+  description = "Used for btp.${var.my_domain} load-balancer"
   vpc_id      = "${aws_vpc.default.id}"
 
   # HTTP access from anywhere
@@ -54,7 +54,7 @@ resource "aws_security_group" "elb" {
 # the instances over SSH and HTTP
 resource "aws_security_group" "default" {
   name        = "connector"
-  description = "Used for btp.<YOUR_HOST>"
+  description = "Used for btp.${var.my_domain}"
   vpc_id      = "${aws_vpc.default.id}"
 
   # SSH access from anywhere
@@ -102,6 +102,61 @@ resource "aws_key_pair" "auth" {
   public_key = "${file(var.public_key_path)}"
 }
 
+resource "aws_simpledb_domain" "connector" {
+  name = "connector"
+}
+
+resource "aws_iam_policy" "connector-policy" {
+  name = "connector-policy"
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": {
+    "Effect": "Allow",
+    "Action": [
+      "sdb:BatchDeleteAttributes",
+      "sdb:BatchPutAttributes",
+      "sdb:DeleteAttributes",
+      "sdb:DeleteDomain",
+      "sdb:DomainMetadata",
+      "sdb:GetAttributes",
+      "sdb:ListDomains",
+      "sdb:PutAttributes",
+      "sdb:Select"
+    ],
+    "Resource": "*"
+  }
+}
+EOF
+}
+
+resource "aws_iam_role" "connector-instance" {
+  name = "connector-instance"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": {
+    "Action": "sts:AssumeRole",
+    "Effect": "Allow",
+    "Principal": {
+      "Service": "ec2.amazonaws.com"
+    }
+  }
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "connector-policy-attachment" {
+  role = "${aws_iam_role.connector-instance.name}"
+  policy_arn = "${aws_iam_policy.connector-policy.arn}"
+}
+
+resource "aws_iam_instance_profile" "connector-instance-profile" {
+  name = "connector-instance-profile"
+  role = "${aws_iam_role.connector-instance.name}"
+}
+
 resource "aws_instance" "web" {
   # The connection block tells our provisioner how to
   # communicate with the resource (instance)
@@ -123,6 +178,9 @@ resource "aws_instance" "web" {
 
   # Our Security group to allow HTTP and SSH access
   vpc_security_group_ids = ["${aws_security_group.default.id}"]
+
+  # Give permission to use SimpleDB
+  iam_instance_profile = "${aws_iam_instance_profile.connector-instance-profile.name}"
 
   # We're going to launch into the same subnet as our ELB. In a production
   # environment it's more common to have a separate private subnet for
@@ -153,12 +211,12 @@ resource "aws_instance" "web" {
 }
 
 resource "aws_route53_zone" "default" {
-  name = "<YOUR_HOST>"
+  name = "${var.my_domain}"
 }
 
 resource "aws_route53_record" "btp" {
   zone_id = "${aws_route53_zone.default.zone_id}"
-  name = "btp.<YOUR_HOST>"
+  name = "btp.${var.my_domain}"
   type = "CNAME"
   ttl = "300"
   records = ["${aws_elb.web.dns_name}"]
