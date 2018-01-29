@@ -14,7 +14,7 @@ resource "aws_internet_gateway" "default" {
 }
 
 # Grant the VPC internet access on its main route table
-resource "aws_route" "internet_access" {
+resource "aws_route" "inte/net_access" {
   route_table_id         = "${aws_vpc.default.main_route_table_id}"
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = "${aws_internet_gateway.default.id}"
@@ -30,7 +30,7 @@ resource "aws_subnet" "default" {
 # A security group for the ELB so it is accessible via the web
 resource "aws_security_group" "elb" {
   name        = "connector_elb"
-  description = "Used for btp.<YOUR_HOST> load-balancer"
+  description = "Used for btp.${var.my_domain} load-balancer"
   vpc_id      = "${aws_vpc.default.id}"
 
   # HTTP access from anywhere
@@ -54,7 +54,7 @@ resource "aws_security_group" "elb" {
 # the instances over SSH and HTTP
 resource "aws_security_group" "default" {
   name        = "connector"
-  description = "Used for btp.<YOUR_HOST>"
+  description = "Used for btp.${var.my_domain}"
   vpc_id      = "${aws_vpc.default.id}"
 
   # SSH access from anywhere
@@ -211,12 +211,12 @@ resource "aws_instance" "web" {
 }
 
 resource "aws_route53_zone" "default" {
-  name = "<YOUR_HOST>"
+  name = "${var.my_domain}"
 }
 
 resource "aws_route53_record" "btp" {
   zone_id = "${aws_route53_zone.default.zone_id}"
-  name = "btp.<YOUR_HOST>"
+  name = "btp.${var.my_domain}"
   type = "CNAME"
   ttl = "300"
   records = ["${aws_elb.web.dns_name}"]
