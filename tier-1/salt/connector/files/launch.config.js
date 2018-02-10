@@ -44,11 +44,11 @@ const connectorApp = {
       host: 'sdb.us-east-1.amazonaws.com',
       domain: 'connector',
       role: 'connector-instance'
-    })
+    }),
     CONNECTOR_ACCOUNTS: JSON.stringify({
       peer: peerPlugin,
       local: miniAccounts
-    })
+    }),
   },
   script: path.resolve(__dirname, 'src/index.js')
 }
