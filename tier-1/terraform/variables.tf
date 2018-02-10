@@ -12,6 +12,10 @@ variable "key_name" {
   description = "Desired name of AWS key pair"
 }
 
+variable "my_domain" {
+  description = "Domain name to host the connector on."
+}
+
 variable "aws_region" {
   description = "AWS region to launch servers."
   default     = "us-east-1"
