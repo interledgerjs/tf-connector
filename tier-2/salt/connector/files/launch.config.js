@@ -42,7 +42,7 @@ const connectorApp = {
     CONNECTOR_ACCOUNTS: JSON.stringify({
       parent: parentPlugin,
       local: miniAccounts
-    }),
+    })
   },
   script: path.resolve(__dirname, 'src/index.js')
 }
