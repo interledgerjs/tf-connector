@@ -8,7 +8,7 @@ const parentPlugin = {
   relation: 'parent',
   plugin: 'ilp-plugin-xrp-asym-client',
   assetCode: 'XRP',
-  assetScale: 6,
+  assetScale: 9,
   options: {
     server: 'btp+wss://YOUR_PARENT_HOST',
     address,
@@ -20,7 +20,7 @@ const miniAccounts = {
   relation: 'child',
   plugin: 'ilp-plugin-mini-accounts',
   assetCode: 'XRP',
-  assetScale: 6,
+  assetScale: 9,
   options: {
     port: 7768
   }

@@ -8,10 +8,10 @@ const peerPlugin = {
   relation: 'peer',
   plugin: 'ilp-plugin-xrp-paychan',
   assetCode: 'XRP',
-  assetScale: 6,
+  assetScale: 9,
   balance: {
-    maximum: '10000',
-    settleThreshold: '-5000',
+    maximum: '10000000',
+    settleThreshold: '-5000000',
     settleTo: '0'
   },
   options: {
@@ -27,7 +27,7 @@ const miniAccounts = {
   relation: 'child',
   plugin: 'ilp-plugin-mini-accounts',
   assetCode: 'XRP',
-  assetScale: 6,
+  assetScale: 9,
   options: {
     port: 7768
   }
