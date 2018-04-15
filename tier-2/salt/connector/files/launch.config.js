@@ -30,8 +30,11 @@ const connectorApp = {
   name: 'connector',
   env: {
     DEBUG: 'ilp*,connector*',
+    CONNECTOR_ENV: 'production',
     CONNECTOR_BACKEND: 'one-to-one',
-    CONNECTOR_FX_SPREAD: '0',
+    CONNECTOR_ADMIN_API: true,
+    CONNECTOR_ADMIN_API_PORT: 7769,
+    CONNECTOR_SPREAD: '0',
     CONNECTOR_STORE: 'ilp-store-simpledb',
     CONNECTOR_STORE_CONFIG: JSON.stringify({
       // Add this line if you changed your region. Set it to you AWS region.

@@ -13,7 +13,7 @@ connector-clone:
     - name: https://github.com/interledgerjs/ilp-connector.git
     - user: ubuntu
     - target: /srv/app
-    - rev: feat/st-routing
+    - rev: master
     - require:
       - pkg: build-essential
       - pkg: nodejs
@@ -22,15 +22,15 @@ connector-clone:
 connector-install:
   cmd.run:
     - name: npm install --json
-    - user: ubuntu
+    - runas: ubuntu
     - cwd: /srv/app
   # npm.bootstrap:
   #   - name: /srv/app
 
 connector-install-plugins:
   cmd.run:
-    - name: npm install ilp-plugin-xrp-asym-client ilp-plugin-mini-accounts interledgerjs/ilp-store-simpledb
-    - user: ubuntu
+    - name: npm install ilp-plugin-xrp-asym-client ilp-plugin-mini-accounts ilp-store-simpledb
+    - runas: ubuntu
     - cwd: /srv/app
 
 connector-launch-script:
@@ -43,5 +43,5 @@ connector-launch-script:
 connector-start:
   cmd.run:
     - name: pm2 start launch.config.js
-    - user: ubuntu
+    - runas: ubuntu
     - cwd: /srv/app
