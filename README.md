@@ -198,7 +198,7 @@ With
   - In `resource "aws_security_group" "default"`, add the following block:
 
 ```
-  ingress: {
+  ingress {
     from_port   = 1080
     to_port     = 1080
     protocol    = "tcp"
