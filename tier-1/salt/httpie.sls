@@ -1,0 +1,2 @@
+httpie:
+  pkg.installed
