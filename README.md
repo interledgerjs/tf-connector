@@ -276,7 +276,7 @@ const secondPeerPlugin = {
   via Route 53 (which Terraform should have done automatically), AWS will go
   through the process automatically.
 
-- Open `./terraform/terraform.tfvars` in your editor of choice.
+- Open `./terraform/main.tf` in your editor of choice.
 
 - Add the following block at the top of the file (replacing `example.com` with
   your domain):
@@ -314,8 +314,12 @@ data "aws_acm_certificate" "web-cert" {
 
 ### Redeploy
 
+In order to redeploy, you must be in your terraform directory. This will fail
+if you aren't on the same machine that you initially deployed from.
+
 ```
-bash ~/terraform.sh taint aws_instance
+bash ~/terraform.sh taint aws_instance.web
+bash ~/terraform.sh apply
 ```
 
 ## Tier 2 with XRP and AWS
