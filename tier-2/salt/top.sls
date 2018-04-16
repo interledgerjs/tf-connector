@@ -6,3 +6,4 @@ base:
     - httpie
     - pm2
     - connector
+    - gui
