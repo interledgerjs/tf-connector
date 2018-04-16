@@ -10,6 +10,9 @@
   - [Upgrading to SSL](#upgrading-to-ssl)
 - [Tier 2 with XRP and AWS](#tier-2-with-xrp-and-aws)
 - [Access your Connector](#access-your-connector)
+  - [Use as Moneyd](#use-as-moneyd)
+  - [Monitor with Moneyd-GUI](#monitor-with-moneyd-gui)
+    - [Run Both](#run-both)
 
 ## Overview
 
@@ -400,6 +403,8 @@ bash ~/terraform.sh apply
 
 ## Access your Connector
 
+### Use as your Moneyd
+
 You can access your deployed connector by tunnelling its
 `ilp-plugin-mini-accounts` instance to your local machine. Then any application
 can access it via port 7768, just as though you were running moneyd.
@@ -416,3 +421,29 @@ output; just keep the command running to keep the port-forward running.
 
 To test your ILP connection, try these [examples from moneyd's
 README.](https://github.com/sharafian/moneyd#sending-payments)
+
+### Monitor with Moneyd-GUI
+
+The connector you deployed comes with a GUI to view routes, ping destinations,
+and send test payments. This GUI runs as a webserver.
+
+To access it, forward the GUI's port to your local machine. 
+
+```
+ssh -N -L 7770:localhost:7770 ubuntu@YOUR_IP_ADDRESS
+```
+
+You should have an IP address for your connector, once it's deployed. Replace
+`YOUR_IP_ADDRESS` with this IP address. This command should produce no output;
+just keep the command running to keep the port-forward running.
+
+Open `http://localhsost:7770` to see your connector's control panel.
+
+#### Run Both
+
+If you want to forward both Moneyd and Moneyd GUI, the port-forward commands
+can be combined
+
+```
+ssh -N -L 7770:localhost:7770 -L 7768:localhost:7768 ubuntu@YOUR_IP_ADDRESS
+```
