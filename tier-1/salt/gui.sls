@@ -1,14 +1,14 @@
 gui-dir:
   file.directory:
     - name: /srv/gui
-    - runas: ubuntu
+    - user: ubuntu
 
 gui-clone:
   git.latest:
     - name: https://github.com/sharafian/moneyd-gui.git
     - target: /srv/gui
     - rev: master
-    - runas: ubuntu
+    - user: ubuntu
     - require:
       - pkg: build-essential
       - pkg: nodejs
