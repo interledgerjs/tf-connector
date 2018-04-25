@@ -297,7 +297,8 @@ data "aws_acm_certificate" "web-cert" {
 }
 ```
 
-- In the `resource "aws_security_group" "elb"` block, add the following block:
+- In the `resource "aws_security_group" "elb"` block, replace the entire
+  `ingress` block containing `from_port = 80` with the following block:
 
 ```
   ingress {
