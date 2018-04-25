@@ -10,6 +10,7 @@ const parentPlugin = {
   assetCode: 'XRP',
   assetScale: 9,
   options: {
+    assetScale: 9,
     server: 'btp+wss://YOUR_PARENT_HOST',
     address,
     secret

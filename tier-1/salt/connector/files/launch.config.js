@@ -15,6 +15,7 @@ const peerPlugin = {
     settleTo: '0'
   },
   options: {
+    assetScale: 9,
     server: 'SERVER_URI_GIVEN_TO_YOU_BY_YOUR_PEER',
     rippledServer: 'wss://s1.ripple.com',
     secret,
@@ -37,6 +38,7 @@ const connectorApp = {
   name: 'connector',
   env: {
     DEBUG: 'ilp*,connector*',
+    CONNECTOR_ILP_ADDRESS: 'MY ILP ADDRESS',
     CONNECTOR_ENV: 'production',
     CONNECTOR_BACKEND: 'one-to-one',
     CONNECTOR_ADMIN_API: true,
