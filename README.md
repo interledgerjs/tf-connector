@@ -106,8 +106,9 @@ PR to this repo.
   ILP ADDRESS` (line 41). Some examples of prefixes that have already been used
   are `g.zero`, `g.africa`, and `g.pando`.
 
-- Replace the "`us-east-1`" in `sdb.us-east-1.amazonaws.com` with your AWS region
-  (the one you entered into `./terraform/variables.tf`).
+- Replace the `sdb.amazonaws.com` URL with the SDB URL corresponding to your AWS region
+  (the one you entered into `./terraform/variables.tf`). [Here's the list of the SimpleDB URLs
+  for each AWS region.](https://docs.aws.amazon.com/general/latest/gr/rande.html#sdb_region)
 
 - Go to your AWS management dashboard and open the IAM service. If you do not have
   an AWS account, create one and add your billing details.
@@ -364,8 +365,9 @@ bash ~/terraform.sh apply
   for a suitable parent on the [Gitter](https://gitter.im/interledger/Lobby).
   Replace `YOUR_PARENT_HOST` (line 13) with this host.
 
-- Replace the "`us-east-1`" in `sdb.us-east-1.amazonaws.com` with your AWS region
-  (the one you entered into `./terraform/variables.tf`).
+- Replace the `sdb.amazonaws.com` URL with the SDB URL corresponding to your AWS region
+  (the one you entered into `./terraform/variables.tf`). [Here's the list of the SimpleDB URLs
+  for each AWS region.](https://docs.aws.amazon.com/general/latest/gr/rande.html#sdb_region)
 
 - Go to your AWS management dashboard and open the IAM service. If you do not have
   an AWS account, create one and add your billing details.

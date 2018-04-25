@@ -46,7 +46,7 @@ const connectorApp = {
     CONNECTOR_SPREAD: '0',
     CONNECTOR_STORE: 'ilp-store-simpledb',
     CONNECTOR_STORE_CONFIG: JSON.stringify({
-      host: 'sdb.us-east-1.amazonaws.com',
+      host: 'sdb.amazonaws.com',
       domain: 'connector',
       role: 'connector-instance'
     }),
