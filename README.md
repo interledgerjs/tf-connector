@@ -93,14 +93,14 @@ PR to this repo.
 - Ask your peer to add a peer plugin for your connector. They'll have to follow
   the [Adding another peer](#adding-another-peer) instructions, and then will
   be able to give you a URI to connect to their server. Replace
-  `SERVER_URI_GIVEN_TO_YOU_BY_YOUR_PEER` (line 18) with this URI.
+  `SERVER_URI_GIVEN_TO_YOU_BY_YOUR_PEER` (line 19) with this URI.
 
   - (If you want to run a websocket server for this peering relationship instead
     of using your peer's server, follow the [Acting as a
     server](#acting-as-a-server) instructions).
 
 - Ask your peer for their ripple hot wallet address. Replace
-  `RIPPLE_ADDRESS_OF_PEER` (line 22) with their ripple hot wallet address.
+  `RIPPLE_ADDRESS_OF_PEER` (line 23) with their ripple hot wallet address.
 
 - Replace the "`us-east-1`" in `sdb.us-east-1.amazonaws.com` with your AWS region
   (the one you entered into `./terraform/variables.tf`).
@@ -239,13 +239,14 @@ const secondPeerPlugin = {
   relation: 'peer',
   plugin: 'ilp-plugin-xrp-paychan',
   assetCode: 'XRP',
-  assetScale: 6,
+  assetScale: 9,
   balance: {
-    maximum: '10000',
-    settleThreshold: '-5000',
+    maximum: '10000000',
+    settleThreshold: '-5000000',
     settleTo: '0'
   },
   options: {
+    assetScale: 9,
     server: 'SERVER_URI_GIVEN_TO_YOU_BY_YOUR_PEER',
     rippledServer: 'wss://s1.ripple.com',
     secret,
