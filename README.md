@@ -102,6 +102,10 @@ PR to this repo.
 - Ask your peer for their ripple hot wallet address. Replace
   `RIPPLE_ADDRESS_OF_PEER` (line 23) with their ripple hot wallet address.
 
+- Choose a unique global prefix for your connector, and put it in place of `MY
+  ILP ADDRESS` (line 41). Some examples of prefixes that have already been used
+  are `g.zero`, `g.africa`, and `g.pando`.
+
 - Replace the "`us-east-1`" in `sdb.us-east-1.amazonaws.com` with your AWS region
   (the one you entered into `./terraform/variables.tf`).
 
