@@ -72,6 +72,10 @@ PR to this repo.
   whatever key you ordinarily use for SSH. When you deploy, terraform will
   upload it to your server so that you can SSH in.
 
+- Add your private key to ssh-agent using the command `ssh-add ~/.ssh/id_rsa` 
+  where `id_rsa` is your private key. Use `ssh-add -l` to verify that your private key
+  has been loaded into the ssh-agent.
+
 - Replace `us-east-1` (line 3) with the AWS region you want to run your connector in.
   You can find the different options in `./terraform/variables.tf`.
 
@@ -343,6 +347,10 @@ bash ~/terraform.sh apply
   whatever key you ordinarily use for SSH. When you deploy, terraform will
   upload it to your server so that you can SSH in.
 
+- Add your private key to ssh-agent using the command `ssh-add ~/.ssh/id_rsa` 
+  where `id_rsa` is your private key. Use `ssh-add -l` to verify that your private key
+  has been loaded into the ssh-agent.
+
 - Replace `us-east-1` (line 3) with the AWS region you want to run your connector in.
   You can find the different options in `./terraform/variables.tf`.
 
@@ -445,7 +453,7 @@ You should have an IP address for your connector, once it's deployed. Replace
 `YOUR_IP_ADDRESS` with this IP address. This command should produce no output;
 just keep the command running to keep the port-forward running.
 
-Open `http://localhsost:7770` to see your connector's control panel.
+Open `http://localhost:7770` to see your connector's control panel.
 
 #### Run Both
 
