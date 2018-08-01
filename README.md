@@ -195,42 +195,45 @@ With
 
   - In `resource "aws_security_group" "elb"`, add the following block:
 
-```
+  ```
   ingress {
     from_port   = 1080
-    to_port     = 1080
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+      to_port     = 1080
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
   }
-```
+  ```
 
   - In `resource "aws_security_group" "default"`, add the following block:
 
-```
+  ```
   ingress {
     from_port   = 1080
     to_port     = 1080
     protocol    = "tcp"
     cidr_blocks = ["10.0.0.0/16"]
   }
-```
+  ```
 
   - In `resource "aws_elb" "web"`, add the following block:
 
-```
+  ```
   listener {
     instance_port     = 1080
     instance_protocol = "tcp"
     lb_port           = 1080
     lb_protocol       = "tcp"
   }
-```
+  ```
 
 - Now the `server` you can give your peer is
-  `btp+ws://:GENERATE_A_SECURE_RANDOM_SECRET@btp.example.com` (With `example.com`
-  as your domain, `GENERATE_A_SECURE_RANDOM_SECRET` as your generated secret, and
-  `8080` as your instance port (the load balancer will expose 80)). (Change to
-  `wss` if you already completed [Upgrading to SSL](#upgrading-to-ssl))
+  `btp+ws://:GENERATE_A_SECURE_RANDOM_SECRET@btp.example.com:PORT` with:
+  - `example.com` as your domain
+  - `GENERATE_A_SECURE_RANDOM_SECRET` as your generated secret
+  - `8080` as your instance port (the load balancer will expose 80). If you
+    followed the indented steps above replace 8080 with the port you used (e.g. 1080). 
+
+  (Change to `wss` if you already completed [Upgrading to SSL](#upgrading-to-ssl))
 
 - Make sure you [Set up your domain](#set-up-your-domain) once your connector
   is deployed, if it is not deployed already.
